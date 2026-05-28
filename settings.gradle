@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)   // 关键修改
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "ShoppingApp"
+include ':app'

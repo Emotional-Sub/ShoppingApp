@@ -1,0 +1,21 @@
+﻿# Gradle 缓存
+.gradle/
+build/
+app/build/
+
+# 本地配置文件
+local.properties
+.idea/
+*.iml
+*.iws
+
+# 编译输出
+*.class
+*.dex
+*.apk
+*.aar
+
+# 其他临时文件
+*.log
+*.lock
+*.bin
