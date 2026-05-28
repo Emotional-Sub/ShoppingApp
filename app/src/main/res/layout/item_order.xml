@@ -48,21 +48,19 @@
                 android:layout_weight="1"
                 android:textSize="14sp" />
 
+            <!-- 关键：必须同时存在这两个按钮 -->
             <Button
                 android:id="@+id/btn_action"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="操作"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
-
+                android:layout_weight="1"
+                android:text="去付款" />
             <Button
                 android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="取消订单"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:textColor="@android:color/holo_red_dark"
-                android:layout_marginStart="8dp" />
+                android:layout_weight="1"
+                android:text="取消订单" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

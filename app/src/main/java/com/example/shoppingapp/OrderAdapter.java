@@ -1,5 +1,6 @@
 package com.example.shoppingapp.adapter;
 
+import android.util.Log;  // 添加导入
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private OnStatusChangeListener listener;
 
     public interface OnStatusChangeListener {
-        void onStatusChange(Order order);   // 付款 / 确认收货
-        void onCancelOrder(Order order);    // 取消订单
+        void onStatusChange(Order order);
+        void onCancelOrder(Order order);
     }
 
     public void setOnStatusChangeListener(OnStatusChangeListener listener) {
@@ -38,13 +39,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Order order = orderList.get(position);
+        // 正确位置：在方法内部添加日志
+        Log.d("OrderStatus", "订单号：" + order.orderNo + " 状态：" + order.status);
+
         holder.tvOrderNo.setText("订单号：" + order.orderNo);
         holder.tvOrderTime.setText("下单时间：" + order.createTime);
         holder.tvTotalPrice.setText("总金额：¥" + order.totalPrice);
         holder.tvStatus.setText(getStatusText(order.status));
 
-        // 根据状态显示不同按钮文字和行为
         if ("pending".equals(order.status)) {
+            holder.btnAction.setBackgroundColor(android.graphics.Color.RED);
+            holder.btnAction.setWidth(200);
             holder.btnAction.setText("去付款");
             holder.btnAction.setVisibility(View.VISIBLE);
             holder.btnCancel.setVisibility(View.VISIBLE);
@@ -65,11 +70,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             holder.btnAction.setVisibility(View.GONE);
             holder.btnCancel.setVisibility(View.GONE);
         }
-
-        // 点击订单项可查看详情（可选）
-        holder.itemView.setOnClickListener(v -> {
-            // 跳转到订单详情页（可后续扩展）
-        });
     }
 
     private String getStatusText(String status) {

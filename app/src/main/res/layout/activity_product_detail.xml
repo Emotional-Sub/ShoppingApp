@@ -14,30 +14,36 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_product_phone"/>
+            android:src="@drawable/ic_product_phone" />
 
         <TextView
             android:id="@+id/tv_detail_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_detail_price"
-            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:textColor="#F44336"
-            android:layout_marginTop="8dp"/>
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tv_detail_description"
-            android:textSize="16sp"
-            android:layout_marginTop="24dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_detail_add_cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="加入购物车"
-            android:layout_marginTop="32dp"/>
+            android:layout_marginTop="32dp"
+            android:text="加入购物车" />
     </LinearLayout>
 </ScrollView>
