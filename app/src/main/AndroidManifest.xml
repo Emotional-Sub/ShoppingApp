@@ -25,6 +25,8 @@
         <activity
             android:name=".OrderListActivity"
             android:theme="@style/Theme.ShoppingApp.NoActionBar" />
-
+        <activity
+            android:name=".OrderDetailActivity"
+            android:theme="@style/Theme.ShoppingApp.NoActionBar" />   <!-- 添加这一行 -->
     </application>
 </manifest>

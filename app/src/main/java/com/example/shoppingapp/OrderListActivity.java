@@ -1,5 +1,6 @@
 package com.example.shoppingapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ public class OrderListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
 
-        // 隐藏默认 ActionBar，避免与 Toolbar 冲突
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -68,7 +68,6 @@ public class OrderListActivity extends AppCompatActivity {
         adapter = new OrderAdapter(orderList);
         recyclerView.setAdapter(adapter);
 
-        // 设置监听器，同时处理状态变更和取消订单
         adapter.setOnStatusChangeListener(new OrderAdapter.OnStatusChangeListener() {
             @Override
             public void onStatusChange(Order order) {
@@ -88,6 +87,14 @@ public class OrderListActivity extends AppCompatActivity {
                 orderDao.deleteOrder(order.id);
                 Toast.makeText(OrderListActivity.this, "订单已取消", Toast.LENGTH_SHORT).show();
                 loadOrders();
+            }
+
+            // 新增：点击订单项跳转到订单详情页
+            @Override
+            public void onItemClick(Order order) {
+                Intent intent = new Intent(OrderListActivity.this, OrderDetailActivity.class);
+                intent.putExtra("order", order);
+                startActivity(intent);
             }
         });
     }

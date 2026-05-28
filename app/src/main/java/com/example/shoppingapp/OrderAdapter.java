@@ -1,6 +1,7 @@
 package com.example.shoppingapp.adapter;
 
-import android.util.Log;  // 添加导入
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.shoppingapp.R;
 import com.example.shoppingapp.model.Order;
+import com.example.shoppingapp.model.OrderItem;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     private List<Order> orderList;
     private OnStatusChangeListener listener;
 
+    // 接口扩展：增加订单项点击回调
     public interface OnStatusChangeListener {
-        void onStatusChange(Order order);
-        void onCancelOrder(Order order);
+        void onStatusChange(Order order);   // 付款 / 确认收货
+        void onCancelOrder(Order order);    // 取消订单
+        void onItemClick(Order order);      // 查看订单详情
     }
 
     public void setOnStatusChangeListener(OnStatusChangeListener listener) {
@@ -39,7 +43,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Order order = orderList.get(position);
-        // 正确位置：在方法内部添加日志
         Log.d("OrderStatus", "订单号：" + order.orderNo + " 状态：" + order.status);
 
         holder.tvOrderNo.setText("订单号：" + order.orderNo);
@@ -47,9 +50,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.tvTotalPrice.setText("总金额：¥" + order.totalPrice);
         holder.tvStatus.setText(getStatusText(order.status));
 
+        // 显示商品名称（取第一个商品，如有多个则显示“xxx等N件商品”）
+        if (order.items != null && !order.items.isEmpty()) {
+            OrderItem first = order.items.get(0);
+            int totalQty = order.items.size();
+            if (totalQty == 1) {
+                holder.tvProductNames.setText(first.productName + " x" + first.quantity);
+            } else {
+                int totalCount = 0;
+                for (OrderItem item : order.items) totalCount += item.quantity;
+                holder.tvProductNames.setText(first.productName + " 等" + totalQty + "件商品");
+            }
+            holder.tvProductNames.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvProductNames.setVisibility(View.GONE);
+        }
+
+        // 根据订单状态显示不同按钮
         if ("pending".equals(order.status)) {
-            holder.btnAction.setBackgroundColor(android.graphics.Color.RED);
-            holder.btnAction.setWidth(200);
             holder.btnAction.setText("去付款");
             holder.btnAction.setVisibility(View.VISIBLE);
             holder.btnCancel.setVisibility(View.VISIBLE);
@@ -70,6 +88,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             holder.btnAction.setVisibility(View.GONE);
             holder.btnCancel.setVisibility(View.GONE);
         }
+
+        // 点击整个条目查看订单详情
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(order);
+        });
     }
 
     private String getStatusText(String status) {
@@ -87,12 +110,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderNo, tvOrderTime, tvTotalPrice, tvStatus;
+        TextView tvOrderNo, tvOrderTime, tvProductNames, tvTotalPrice, tvStatus;
         Button btnAction, btnCancel;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvOrderNo = itemView.findViewById(R.id.tv_order_no);
             tvOrderTime = itemView.findViewById(R.id.tv_order_time);
+            tvProductNames = itemView.findViewById(R.id.tv_product_names);  // 新增商品名称
             tvTotalPrice = itemView.findViewById(R.id.tv_total_price);
             tvStatus = itemView.findViewById(R.id.tv_status);
             btnAction = itemView.findViewById(R.id.btn_action);

@@ -1,6 +1,8 @@
 package com.example.shoppingapp.model;
 
-public class OrderItem {
+import java.io.Serializable;  // 添加导入
+
+public class OrderItem implements Serializable {  // 添加 implements Serializable
     public long id;
     public long orderId;
     public int productId;
